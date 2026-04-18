@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>房仲AI工具</title>
+
+<style>
+body { font-family: sans-serif; margin:0; padding:10px; }
+input, textarea, button { width:100%; margin-top:10px; padding:10px; font-size:16px; }
+button { background:#000; color:#fff; border:none; border-radius:8px; }
+.box { margin-top:20px; }
+</style>
+</head>
+
+<body>
+
+<h2>📱 房仲AI工具</h2>
+
+<input type="file" id="img">
+
+<div style="display:flex; gap:10px; overflow-x:auto;">
+<button>去雜物</button>
+<button>補家具</button>
+<button>變亮</button>
+<button>北歐</button>
+</div>
+
+<textarea id="input" placeholder="輸入一句話（可空白）"></textarea>
+<input id="agent" placeholder="營業員名稱（可不填）">
+
+<button onclick="generate()">🚀 一鍵生成</button>
+
+<div class="box">
+<h3>591</h3>
+<textarea id="p591"></textarea>
+<button onclick="copy('p591')">📋複製</button>
+
+<h3>FB</h3>
+<textarea id="fb"></textarea>
+<button onclick="copy('fb')">📋複製</button>
+
+<h3>IG</h3>
+<textarea id="ig"></textarea>
+<button onclick="copy('ig')">📋複製</button>
+</div>
+
+<script>
+async function generate() {
+  const input = document.getElementById('input').value;
+  const agent = document.getElementById('agent').value;
+
+  const res = await fetch('/api/copy', {
+    method:'POST',
+    body: JSON.stringify({ input, agent })
+  });
+
+  const data = await res.json();
+
+  document.getElementById('p591').value = data.p591;
+  document.getElementById('fb').value = data.fb;
+  document.getElementById('ig').value = data.ig;
+}
+
+function copy(id){
+  navigator.clipboard.writeText(document.getElementById(id).value);
+}
+</script>
+
+</body>
+</html>
